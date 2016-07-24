@@ -8,6 +8,7 @@
 
 namespace RobotCafe\Mapper;
 
+
 use RobotCafe\Model\ShopInterface;
 
 interface ShopMapperInterface

@@ -15,16 +15,90 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'RobotCafe\Controller\Index',
+                        'controller' => 'RobotCafe\Controller\Shop',
                         'action' => 'hello'
                     ),
                 ),
             ),
+            'shop' => array(
+                'type'    => 'literal',
+                'options' => array(
+                    'route'    => '/shop',
+                    'defaults' => array(
+                        'controller' => 'RobotCafe\Controller\Shop',
+                        'action' => 'add'
+                    )
+                ),
+                'may_terminate' => true,
+                'child_routes'  => array(
+                    'getOrDelete' => array(
+                        'type' => 'segment',
+                        'options' => array(
+                            'route'    => '[/:id]', // match /shop/:id
+                            'constraints' => array(
+                                'id' => '[1-9]\d*'
+                            ),
+                            'defaults' => array(
+                                'action' => 'getOrDelete'
+                            )
+                        ),
+                        'may_terminate' => true,
+                        'child_routes'  => array(
+                            'execute' => array(
+                                'type' => 'literal',
+                                'options' => array(
+                                    'route'    => '/execute', // match /shop/:id/execute
+                                    'defaults' => array(
+                                        'action' => 'execute'
+                                    )
+                                )
+                            ),
+                            'robot' => array(
+                                'type' => 'literal',
+                                'options' => array(
+                                    'route'    => '/robot', // match /shop/:id/robot
+                                    'defaults' => array(
+                                        'controller' => 'RobotCafe\Controller\Robot',
+                                        'action' => 'add'
+                                    )
+                                ),
+                                'may_terminate' => true,
+                                'child_routes'  => array(
+                                    'updateOrDelete' => array(
+                                        'type' => 'segment',
+                                        'options' => array(
+                                            'route'    => '[/:rid]', // match /shop/:id/robot/:rid
+                                            'constraints' => array(
+                                                'rid' => '[1-9]\d*'
+                                            ),
+                                            'defaults' => array(
+                                                'action' => 'updateOrDelete'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
         )
     ),
+
     'controllers' => array(
-        'invokables' => array(
-            'RobotCafe\Controller\Index' => 'RobotCafe\Controller\IndexController',
+        'factories' => array(
+            'RobotCafe\Controller\Shop'  => 'RobotCafe\Factory\ShopControllerFactory',
+            'RobotCafe\Controller\Robot' => 'RobotCafe\Factory\RobotControllerFactory',
+        )
+    ),
+
+    'service_manager' => array(
+        'factories' => array(
+            'RobotCafe\Service\ShopServiceInterface' => 'RobotCafe\Factory\ShopServiceFactory',
+            'RobotCafe\Service\RobotServiceInterface'=> 'RobotCafe\Factory\RobotServiceFactory',
+            'RobotCafe\Mapper\ShopMapperInterface'   => 'RobotCafe\Factory\ShopDbSqlMapperFactory',
+            'RobotCafe\Mapper\RobotMapperInterface'  => 'RobotCafe\Factory\RobotDbSqlMapperFactory',
+            'Zend\Db\Adapter\Adapter'                => 'Zend\Db\Adapter\AdapterServiceFactory',
         ),
     ),
 

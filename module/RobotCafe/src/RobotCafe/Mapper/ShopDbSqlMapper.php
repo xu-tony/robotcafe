@@ -27,6 +27,7 @@ class ShopDbSqlMapper implements ShopMapperInterface
      */
     protected $dbAdapter;
 
+    protected $tableName = 'shops';
     /**
      * @param AdapterInterface  $dbAdapter
      */
@@ -44,7 +45,7 @@ class ShopDbSqlMapper implements ShopMapperInterface
     {
         $sql    = new Sql($this->dbAdapter);
         $select = $sql->select()->from(
-            array('s' => 'shops')
+            array('s' => $this->tableName)
         );
 
         $select->join(
@@ -105,7 +106,7 @@ class ShopDbSqlMapper implements ShopMapperInterface
             'width'  => $shopObject->getWidth()
         );
 
-        $action = new Insert('shops');
+        $action = new Insert($this->tableName);
 
         $action->values($shopData);
 
@@ -129,7 +130,7 @@ class ShopDbSqlMapper implements ShopMapperInterface
      */
     public function deleteShop($id)
     {
-        $action = new Delete('shops');
+        $action = new Delete($this->tableName);
         $action->where(array('id=?'=> $id));
 
         $sql = new Sql($this->dbAdapter);

@@ -37,6 +37,10 @@ class RobotDbSqlMapper implements RobotMapperInterface
      */
     protected $robotPrototype;
 
+    /**
+     * @var string
+     */
+    protected $tableName = 'robots';
 
     /**
      * @param AdapterInterface $dbAdapter
@@ -64,7 +68,7 @@ class RobotDbSqlMapper implements RobotMapperInterface
     {
         $sql = new Sql($this->dbAdapter);
 
-        $select = $sql->select('robots');
+        $select = $sql->select($this->tableName);
         $select->where(array('id = ?' => $rid, 'sid = ?' => $sid));
 
         $stmt = $sql->prepareStatementForSqlObject($select);
@@ -86,8 +90,9 @@ class RobotDbSqlMapper implements RobotMapperInterface
     {
         $robotData = $this->hydrator->extract($robot);
         unset($robotData['id']); // Neither Insert nor Update needs the ID in the array
+        unset($robotData['sid']); // Neither Insert nor Update needs the shop ID in the array
 
-        $action = new Insert('robots');
+        $action = new Insert($this->tableName);
 
         $action->values($robotData);
 
@@ -114,7 +119,7 @@ class RobotDbSqlMapper implements RobotMapperInterface
         unset($postData['id']); // Neither Insert nor Update needs the ID in the array
 
         // ID present, it's an Update
-        $action = new Update('robots');
+        $action = new Update($this->tableName);
         $action->set($postData);
         $action->where(array('id = ?' => $robot->getId()));
 
@@ -136,7 +141,7 @@ class RobotDbSqlMapper implements RobotMapperInterface
      */
     public function delete($id)
     {
-        $action = new Delete('robots');
+        $action = new Delete($this->tableName);
         $action->where(array('id=?' => $id));
 
         $sql = new Sql($this->dbAdapter);
@@ -152,7 +157,7 @@ class RobotDbSqlMapper implements RobotMapperInterface
      */
     public function deleteByShopId($sid)
     {
-        $action = new Delete('robots');
+        $action = new Delete($this->tableName);
         $action->where(array('sid=?' => $sid));
 
         $sql = new Sql($this->dbAdapter);
@@ -170,7 +175,7 @@ class RobotDbSqlMapper implements RobotMapperInterface
     {
         $sql = new Sql($this->dbAdapter);
 
-        $select = $sql->select('robots');
+        $select = $sql->select($this->tableName);
         $select->where(array('x = ?' => $x, 'y = ?' => $y, 'sid = ?' => $sid));
 
         $stmt = $sql->prepareStatementForSqlObject($select);
