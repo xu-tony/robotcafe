@@ -12,21 +12,32 @@ namespace RobotCafeTestTest\Mapper;
 use PHPUnit_Framework_TestCase;
 use RobotCafe\Mapper\RobotDbSqlMapper;
 use RobotCafe\Model\Robot;
+use Zend\Db\Adapter\Adapter;
+use Zend\Db\Sql\Sql;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Mockery;
 
 class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
 {
 
+    private $myService;
+    private $typeaffaireTable;
+
+    private $mockDriver;
+    private $mockConnection;
+    private $mockPlatform;
+    private $mockStatement;
+    private $adapter;
+    private $sql;
+
+
+
+
+
     public function testAdd(){
 
-        $mockDbAdapter = $this->getMockBuilder('Zend\Db\Adapter\Adapter')
-            ->disableOriginalConstructor()
-            ->getMock();
 
-
-        $mockDbAdapter->expects($this->once())
-            ->method('insert')
-            ->will($this->returnValue(1));
+        $mockDbAdapter = Mockery::mock('Zend\Db\Adapter\Adapter');
 
         $robot = new Robot();
         $hydrator = new ClassMethods(false);

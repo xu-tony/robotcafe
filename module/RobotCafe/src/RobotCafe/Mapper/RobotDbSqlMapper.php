@@ -92,7 +92,6 @@ class RobotDbSqlMapper implements RobotMapperInterface
         unset($robotData['id']); // Neither Insert nor Update needs the ID in the array
 
         $action = new Insert($this->tableName);
-
         $action->values($robotData);
 
         $sql = new Sql($this->dbAdapter);

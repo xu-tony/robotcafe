@@ -148,12 +148,11 @@ class RobotTest extends PHPUnit_Framework_TestCase
             'commands', $robotArray);
         $this->assertArrayNotHasKey(
             'sid', $robotArray);
-        $this->assertArrayNotHasKey(
-            'id', $robotArray);
 
         $this->assertEquals(
             $robotArray,
             array(
+                'id' => 3,
                 'x' => 1,
                 'y' => 2,
                 'heading' => Robot::SOUTH,

@@ -1,77 +1,197 @@
-ZendSkeletonApplication
-=======================
+RobotCafeApplication
+====================
 
 Introduction
 ------------
-This is a simple, skeleton application using the ZF2 MVC layer and module
-systems. This application is meant to be used as a starting place for those
-looking to get their feet wet with ZF2.
+This is a simple, restful application using the ZF2 MVC layer and module
+systems. This application is meant to be designed for robot adding to shop with moving command,
+shop is simulated as a matrix grid, top left corner coordinate will be (0,0). Robot has the
+coordinate and heading direction.shop can trigger the robots to execute their own moving commands.
 
-Installation
+The whole app is hosting in AWS,
+the general endpoint is http://54.206.125.49 , you will get a 'hello world' when you hit that url.
+
+
+
+Design ideas
 ------------
+1. The basic relationship of Shop and Robot will be acting like observer pattern. Robots are added in to the shop, when
+shop notify robot to execute command, robot will update its status. After every single command finished by all robots,
+shop will immediate check their status, if there is error happening, then break out.
 
-Using Composer (recommended)
-----------------------------
-The recommended way to get a working copy of this project is to clone the repository
-and use `composer` to install dependencies using the `create-project` command:
+2. RESTful api design, there are 3 layer, controller, service and DAO, each dependency is injected based on the dependency
+inversion principle. Factory pattern is plenty used, when zend service manager need to load the service, it goes to a factory,
+this will decrease the dependency coupling issue.
 
-    curl -s https://getcomposer.org/installer | php --
-    php composer.phar create-project -sdev --repository-url="https://packages.zendframework.com" zendframework/skeleton-application path/to/install
 
-Alternately, clone the repository and manually invoke `composer` using the shipped
-`composer.phar`:
 
-    cd my/project/dir
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git
-    cd ZendSkeletonApplication
-    php composer.phar self-update
-    php composer.phar install
-
-(The `self-update` directive is to ensure you have an up-to-date `composer.phar`
-available.)
-
-Another alternative for downloading the project is to grab it via `curl`, and
-then pass it to `tar`:
-
-    cd my/project/dir
-    curl -#L https://github.com/zendframework/ZendSkeletonApplication/tarball/master | tar xz --strip-components=1
-
-You would then invoke `composer` to install dependencies per the previous
-example.
-
-Using Git submodules
---------------------
-Alternatively, you can install using native git submodules:
-
-    git clone git://github.com/zendframework/ZendSkeletonApplication.git --recursive
-
-Web Server Setup
+API explanation
 ----------------
 
-### PHP CLI Server
+1. shop get
+-----------
+url: http://54.206.125.49/shop/<:id>, http method is GET only, otherwise 405 status with response:
+{
+  "message": "http method not allowed"
+}
 
-The simplest way to get started if you are using PHP 5.4 or above is to start the internal PHP cli-server in the root directory:
+the id must be integer which is greater than 0,
+The possible return data with 200 status is:
 
-    php -S 0.0.0.0:8080 -t public/ public/index.php
+{
+  "id": "1",
+  "width": "5",
+  "height": "5",
+  "robots": [
+    {
+      "id": "1",
+      "x": "4",
+      "y": "4",
+      "heading": "N",
+      "commands": "LM"
+    },
+    {
+      "id": "2",
+      "x": "0",
+      "y": "0",
+      "heading": "S",
+      "commands": "LLM"
+    },
+  ]
+}
 
-This will start the cli-server on port 8080, and bind it to all network
-interfaces.
+when the provided id has no data then response with 404 status:
+{
+  "message": "resource data no found"
+}
 
-**Note: ** The built-in CLI server is *for development only*.
 
-### Apache Setup
+2. shop add
+-----------
+url: http://54.206.125.49/shop, http method is POST only, otherwise 405 status will return.
 
-To setup apache, setup a virtual host to point to the public/ directory of the
-project and you should be ready to go! It should look something like below:
+The request json data:
 
-    <VirtualHost *:80>
-        ServerName zf2-tutorial.localhost
-        DocumentRoot /path/to/zf2-tutorial/public
-        SetEnv APPLICATION_ENV "development"
-        <Directory /path/to/zf2-tutorial/public>
-            DirectoryIndex index.php
-            AllowOverride All
-            Order allow,deny
-            Allow from all
-        </Directory>
-    </VirtualHost>
+{"width":5,"height":5}
+
+"width" and "height" must occur, and value must be integer greater than 0.
+
+response with 200 status:
+{
+  "id": "3",
+  "width": 5,
+  "height": 5,
+  "robots": []
+}
+
+3. shop delete
+--------------
+url: http://54.206.125.49/shop/<:id>, http method is DELETE only, otherwise 405 status will return.
+
+if the provided id is successfully deleted, response with 200 status:
+{
+  "status": "ok"
+}
+otherwise 404 will return.
+
+4. shop robot add
+-----------------
+url: http://54.206.125.49/shop/<:id>/robot, http method is POST only, otherwise 405 status will return.
+Request json:
+
+{"x":4,"y":4,"heading":"N","commands":"LM"},
+which x,y must by integer which is greater or equal than zero, "heading" must be one of "N","S","E" or "W" which represent
+four directions, then commands can be a string which contains "L"(left), "R"(right), or "M"(moveforward).
+
+When insert this robot, shop id must be existing in our database, otherwise 404 status will return, also the robot must not
+has the same coordinate with the existing robot which is in the same shop.
+
+the valid response is like:
+{
+  "id": "6",
+  "x": 4,
+  "y": 4,
+  "heading": "N",
+  "commands": "LM"
+}
+
+
+5. shop robot update
+-------------------
+url: http://54.206.125.49/shop/<:id>/robot/<:rid>, http method is PUT only, otherwise 405 status will return.
+Request json:
+
+{"x":4,"y":4,"heading":"N","commands":"LM"},
+
+json validation is same as robot add action.
+
+when robot id is existing in the shop id, the update action will be executed and response 200 status with data like:
+
+{
+  "id": "6",
+  "x": 4,
+  "y": 4,
+  "heading": "N",
+  "commands": "LM"
+}
+otherwise 404 will return.
+
+
+6. shop robot delete
+--------------------
+url: http://54.206.125.49/shop/<:id>/robot/<:rid>, httpd method is DELETE only, otherwise 405 status will return.
+when robot id is existing in the provided shop id, then 200 will be returned with:
+{
+  "status": "ok"
+}
+otherwise resource not found.
+
+7. shop robot execute commands
+------------------------------
+url: http://54.206.125.49/shop/<:id>/execute, httpd method is POST only, otherwise 405 status will return.
+when robot id is existing in the provided shop id, the shop will trigger all robots to run their commands in "parallel":
+{
+  "id": "1",
+  "width": "5",
+  "height": "5",
+  "robots": [
+    {
+      "id": "1",
+      "x": 3,
+      "y": "4",
+      "heading": "W",
+      "commands": "LM"
+    },
+    {
+      "id": "2",
+      "x": "0",
+      "y": -1,
+      "heading": "N",
+      "commands": "LLM"
+    },
+    {
+      "id": "4",
+      "x": 2,
+      "y": "3",
+      "heading": "W",
+      "commands": "LM"
+    }
+  ],
+  "errors": [
+    "robot id:2 has moved out of the shop range"
+  ]
+}
+
+when there is any error happening during the robots moving, the error could be crashed, could be running out of shop
+range, the execution will break out, and return all robots status.
+
+
+
+Unit-test result
+----------------
+
+
+
+
+
+

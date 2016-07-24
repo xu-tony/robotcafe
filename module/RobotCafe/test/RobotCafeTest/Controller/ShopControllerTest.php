@@ -11,7 +11,7 @@ namespace RobotCafeTestTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
 
-class ShopControllerTest extends AbstractHttpControllerTestCase
+class ShopControllerTest //extends AbstractHttpControllerTestCase
 {
 
 }

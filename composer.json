@@ -8,10 +8,11 @@
     ],
     "homepage": "http://framework.zend.com/",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.5",
         "zendframework/zendframework": "2.2.7"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.4"
+        "phpunit/phpunit": "dev-master",
+        "mockery/mockery": "dev-master"
     }
 }
