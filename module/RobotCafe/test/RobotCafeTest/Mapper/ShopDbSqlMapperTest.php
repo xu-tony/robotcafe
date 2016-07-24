@@ -2,8 +2,8 @@
 /**
  * Created by IntelliJ IDEA.
  * User: tonyxu
- * Date: 24/07/2016
- * Time: 7:25 PM
+ * Date: 25/07/2016
+ * Time: 9:06 AM
  */
 
 namespace RobotCafeTest\Mapper;
@@ -12,10 +12,12 @@ namespace RobotCafeTest\Mapper;
 use Mockery;
 use PHPUnit_Framework_TestCase;
 use RobotCafe\Mapper\RobotDbSqlMapper;
+use RobotCafe\Mapper\ShopDbSqlMapper;
 use RobotCafe\Model\Robot;
+use RobotCafe\Model\Shop;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
-class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
+class ShopDbSqlMapperTest extends PHPUnit_Framework_TestCase
 {
     // build the mocked adapter
     protected function getAdapterMock($functionMap){
@@ -90,7 +92,7 @@ class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
 
         if (array_key_exists('current', $functionMap)) {
             $resultSet->shouldReceive('current')
-                ->once()
+                ->atLeast()
                 ->andReturn($functionMap['current']);
         }
 
@@ -98,36 +100,49 @@ class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * test the robot add function
+     * test addshop
      */
-    public function testAdd()
-    {
+    public function testAddShop(){
         $functionMap = array(
             'getGeneratedValue' => 1
         );
         $mockDbAdapter = $this->getAdapterMock($functionMap);
 
-        $robot = new Robot();
         $hydrator = new ClassMethods(false);
 
-        $robotDbSqlMapper = new RobotDbSqlMapper($mockDbAdapter, $hydrator, new Robot());
-        $robot = new Robot();
-        $robot->setSid(2);
-        $robot->setX(1);
-        $robot->setY(2);
-        $robot->setHeading(Robot::SOUTH);
-        $robot->setCommands('MMLMRMM');
+        $shopDbSqlMapper = new ShopDbSqlMapper($mockDbAdapter, $hydrator, new Shop());
+        $shop = new Shop();
+        $shop->setWidth(6);
+        $shop->setHeight(6);
 
-        $id = $robotDbSqlMapper->add($robot);
-
+        $id = $shopDbSqlMapper->addShop($shop);
         $this->assertEquals($id, 1);
     }
 
     /**
-     * test the findBySIdAndRId
+     * test deleteshop
      */
-    public function testFindBySIdAndRId()
-    {
+    public function testDelete(){
+        $functionMap = array(
+            'getAffectedRows' => 1
+        );
+        $mockDbAdapter = $this->getAdapterMock($functionMap);
+        $hydrator = new ClassMethods(false);
+        $shopDbSqlMapper = new ShopDbSqlMapper($mockDbAdapter, $hydrator, new Shop());
+
+        $deleted = $shopDbSqlMapper->deleteShop($id = 1);
+
+        $this->assertTrue($deleted);
+    }
+
+    /**
+     * test findshop
+     */
+    /*public function testFindShop(){
+        $shop = new Shop();
+        $shop->setHeight(6);
+        $shop->setWidth(6);
+
         $robot = new Robot();
         $robot->setX(1);
         $robot->setY(2);
@@ -137,7 +152,6 @@ class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
         $functionMap = array(
             'isQueryResult' => true,
             'getAffectedRows' => 1,
-            'current' => $robot->toArray()
         );
         $mockDbAdapter = $this->getAdapterMock($functionMap);
 
@@ -150,70 +164,8 @@ class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
         $findRobot = $robotDbSqlMapper->findBySIdAndRId($id, $rid);
 
         $this->assertEquals($robot, $findRobot);
-    }
+    }*/
 
-    /**
-     * test update
-     */
-    public function testUpdate(){
 
-        $robot = new Robot();
-        $robot->setSid(2);
-        $robot->setX(1);
-        $robot->setY(2);
-        $robot->setHeading(Robot::SOUTH);
-        $robot->setCommands('MMLMRMM');
-
-        $mockDbAdapter = $this->getAdapterMock(array());
-        $hydrator = new ClassMethods(false);
-        $robotDbSqlMapper = new RobotDbSqlMapper($mockDbAdapter, $hydrator, new Robot());
-        $updated = $robotDbSqlMapper->update($robot);
-
-        $this->assertTrue($updated);
-    }
-
-    /**
-     * test delete
-     */
-    public function testDelete(){
-        $functionMap = array(
-            'getAffectedRows' => 1
-        );
-        $mockDbAdapter = $this->getAdapterMock($functionMap);
-        $hydrator = new ClassMethods(false);
-        $robotDbSqlMapper = new RobotDbSqlMapper($mockDbAdapter, $hydrator, new Robot());
-
-        $deleted = $robotDbSqlMapper->delete($id = 1);
-
-        $this->assertTrue($deleted);
-    }
-
-    /**
-     * test findByRobotCoordinate
-     */
-    public function testFindByRobotCoordinate(){
-        $robot = new Robot();
-        $robot->setX(1);
-        $robot->setY(2);
-        $robot->setHeading(Robot::SOUTH);
-        $robot->setCommands('MMLMRMM');
-
-        $functionMap = array(
-            'isQueryResult' => true,
-            'getAffectedRows' => 1,
-            'current' => $robot->toArray()
-        );
-        $mockDbAdapter = $this->getAdapterMock($functionMap);
-
-        $hydrator = new ClassMethods(false);
-
-        $robotDbSqlMapper = new RobotDbSqlMapper($mockDbAdapter, $hydrator, new Robot());
-        $id = 1;
-        $x =1;
-        $y = 1;
-        $findRobot = $robotDbSqlMapper->findByRobotCoordinate($x, $y, $id);
-
-        $this->assertEquals($robot, $findRobot);
-    }
 
 }

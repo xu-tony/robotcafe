@@ -6,7 +6,7 @@
  * Time: 6:02 PM
  */
 
-namespace RobotCafeTestTest\Model;
+namespace RobotCafeTest\Model;
 
 use Exception;
 use PHPUnit_Framework_TestCase;

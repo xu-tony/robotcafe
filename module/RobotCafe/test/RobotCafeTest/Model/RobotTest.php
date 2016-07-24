@@ -6,7 +6,7 @@
  * Time: 5:00 PM
  */
 
-namespace RobotCafeTestTest\Model;
+namespace RobotCafeTest\Model;
 
 
 use Exception;
