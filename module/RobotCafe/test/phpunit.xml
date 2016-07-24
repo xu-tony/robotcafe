@@ -6,4 +6,9 @@
             <directory>./RobotCafeTest</directory>
         </testsuite>
     </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src/RobotCafe</directory>
+        </whitelist>
+    </filter>
 </phpunit>
