@@ -202,16 +202,24 @@ Unit-test result
 https://travis-ci.org/xu-tony/robotcafe/builds
 
  Summary:
+
   Classes:  0.00% (0/15)
+
   Methods: 44.87% (35/78)
+
   Lines:   37.74% (214/567)
+
+
 
 \RobotCafe\Mapper::RobotDbSqlMapper
   Methods:  85.71% ( 6/ 7)   Lines:  90.48% ( 57/ 63)
+
 \RobotCafe\Mapper::ShopDbSqlMapper
   Methods:  75.00% ( 3/ 4)   Lines:  35.94% ( 23/ 64)
+
 \RobotCafe\Model::Robot
   Methods:  87.50% (14/16)   Lines:  92.75% ( 64/ 69)
+
 \RobotCafe\Model::Shop
   Methods:  92.31% (12/13)   Lines:  97.22% ( 70/ 72)
 
