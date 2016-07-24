@@ -223,6 +223,7 @@ class Robot implements RobotInterface
      */
     public function toArray(){
         $robot = array();
+        $robot['id'] = $this->getId();
         $robot['x'] = $this->getX();
         $robot['y'] = $this->getY();
         $robot['heading'] = $this->getHeading();

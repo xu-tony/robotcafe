@@ -66,6 +66,7 @@ class RobotController extends AbstractRobotCafeController
                             $rid = $this->robotService->add($newRobot);
                             if ($rid) {
                                 // if new robot is added
+                                $newRobot->setId($rid);
                                 return $this->successfulRequest($newRobot->toArray());
                             } else {
                                 return $this->internalServerError();

@@ -90,7 +90,6 @@ class RobotDbSqlMapper implements RobotMapperInterface
     {
         $robotData = $this->hydrator->extract($robot);
         unset($robotData['id']); // Neither Insert nor Update needs the ID in the array
-        unset($robotData['sid']); // Neither Insert nor Update needs the shop ID in the array
 
         $action = new Insert($this->tableName);
 
