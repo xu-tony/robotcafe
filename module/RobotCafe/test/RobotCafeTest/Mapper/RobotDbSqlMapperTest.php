@@ -17,7 +17,7 @@ use Zend\Db\Sql\Sql;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Mockery;
 
-class RobotDbSqlMapperTest extends PHPUnit_Framework_TestCase
+class RobotDbSqlMapperTest //extends PHPUnit_Framework_TestCase
 {
 
     private $myService;
