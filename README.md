@@ -31,6 +31,7 @@ API explanation
 1. shop get
 -----------
 url: http://54.206.125.49/shop/<:id>, http method is GET only, otherwise 405 status with response:
+
 {
   "message": "http method not allowed"
 }
@@ -61,6 +62,7 @@ The possible return data with 200 status is:
 }
 
 when the provided id has no data then response with 404 status:
+
 {
   "message": "resource data no found"
 }
@@ -77,6 +79,7 @@ The request json data:
 "width" and "height" must occur, and value must be integer greater than 0.
 
 response with 200 status:
+
 {
   "id": "3",
   "width": 5,
@@ -89,9 +92,11 @@ response with 200 status:
 url: http://54.206.125.49/shop/<:id>, http method is DELETE only, otherwise 405 status will return.
 
 if the provided id is successfully deleted, response with 200 status:
+
 {
   "status": "ok"
 }
+
 otherwise 404 will return.
 
 4. shop robot add
@@ -107,6 +112,7 @@ When insert this robot, shop id must be existing in our database, otherwise 404 
 has the same coordinate with the existing robot which is in the same shop.
 
 the valid response is like:
+
 {
   "id": "6",
   "x": 4,
@@ -134,6 +140,7 @@ when robot id is existing in the shop id, the update action will be executed and
   "heading": "N",
   "commands": "LM"
 }
+
 otherwise 404 will return.
 
 
@@ -141,15 +148,18 @@ otherwise 404 will return.
 --------------------
 url: http://54.206.125.49/shop/<:id>/robot/<:rid>, httpd method is DELETE only, otherwise 405 status will return.
 when robot id is existing in the provided shop id, then 200 will be returned with:
+
 {
   "status": "ok"
 }
+
 otherwise resource not found.
 
 7. shop robot execute commands
 ------------------------------
 url: http://54.206.125.49/shop/<:id>/execute, httpd method is POST only, otherwise 405 status will return.
 when robot id is existing in the provided shop id, the shop will trigger all robots to run their commands in "parallel":
+
 {
   "id": "1",
   "width": "5",
