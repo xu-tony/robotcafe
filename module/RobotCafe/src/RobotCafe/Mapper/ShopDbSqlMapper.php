@@ -66,6 +66,8 @@ class ShopDbSqlMapper implements ShopMapperInterface
             $resultSet = new ResultSet();
             $resultSet->initialize($result);
 
+            $value = $result->getGeneratedValue();
+
             foreach($resultSet->toArray() as $row){
                 $robot = new Robot();
                 $robot->setId($row['rid']);

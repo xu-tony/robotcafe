@@ -15,7 +15,7 @@ use PHPUnit_Framework_TestCase;
 Abstract class AbstractDbSqlTestCase extends PHPUnit_Framework_TestCase
 {
 
-    protected function getAdapterMock($returnValue){
+    protected function getAdapterMock($functionMap){
         $driver = Mockery::mock('Zend\Db\Adapter\Driver\DriverInterface');
         $resultSet = Mockery::mock('Zend\Db\Adapter\Driver\Pdo\Result');
         $mockDbAdapter = Mockery::mock('Zend\Db\Adapter\Adapter');
@@ -63,10 +63,35 @@ Abstract class AbstractDbSqlTestCase extends PHPUnit_Framework_TestCase
             ->once()
             ->andReturn(array());
 
-        $resultSet->shouldReceive('getGeneratedValue')
+        $paramContainer->shouldReceive('merge')
             ->once()
-            ->andReturn($returnValue);
+            ->andReturn(null);
+
+        if (array_key_exists('getGeneratedValue', $functionMap)) {
+            $resultSet->shouldReceive('getGeneratedValue')
+                ->once()
+                ->andReturn($functionMap['getGeneratedValue']);
+        }
+
+        if (array_key_exists('isQueryResult', $functionMap)) {
+            $resultSet->shouldReceive('isQueryResult')
+                ->once()
+                ->andReturn($functionMap['isQueryResult']);
+        }
+
+        if (array_key_exists('getAffectedRows', $functionMap)) {
+            $resultSet->shouldReceive('getAffectedRows')
+                ->once()
+                ->andReturn($functionMap['getAffectedRows']);
+        }
+
+        if (array_key_exists('current', $functionMap)) {
+            $resultSet->shouldReceive('current')
+                ->once()
+                ->andReturn($functionMap['current']);
+        }
 
         return $mockDbAdapter;
     }
+
 }

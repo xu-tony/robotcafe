@@ -149,6 +149,15 @@ class ShopDbSqlMapperTest extends PHPUnit_Framework_TestCase
         $robot->setHeading(Robot::SOUTH);
         $robot->setCommands('MMLMRMM');
 
+        $robot2 = new Robot();
+        $robot2->setX(3);
+        $robot2->setY(2);
+        $robot2->setHeading(Robot::SOUTH);
+        $robot2->setCommands('MMLMRMM');
+
+        $shop->addRobot($robot);
+        $shop->addRobot($robot2);
+
         $functionMap = array(
             'isQueryResult' => true,
             'getAffectedRows' => 1,
@@ -157,13 +166,12 @@ class ShopDbSqlMapperTest extends PHPUnit_Framework_TestCase
 
         $hydrator = new ClassMethods(false);
 
-        $robotDbSqlMapper = new RobotDbSqlMapper($mockDbAdapter, $hydrator, new Robot());
+        $shopDbSqlMapper = new ShopDbSqlMapper($mockDbAdapter);
         $id = 1;
-        $rid = 2;
 
-        $findRobot = $robotDbSqlMapper->findBySIdAndRId($id, $rid);
+        $findShop = $shopDbSqlMapper->findShop($id);
 
-        $this->assertEquals($robot, $findRobot);
+        $this->assertEquals($shop, $findShop);
     }*/
 
 

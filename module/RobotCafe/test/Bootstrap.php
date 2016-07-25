@@ -99,7 +99,7 @@ class Bootstrap
         ));
     }
 
-    protected static function findParentPath($path)
+    public static function findParentPath($path)
     {
         $dir = __DIR__;
         $previousDir = '.';
