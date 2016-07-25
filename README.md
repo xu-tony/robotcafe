@@ -205,22 +205,36 @@ https://travis-ci.org/xu-tony/robotcafe/builds
 
   Classes:  0.00% (0/15)
 
-  Methods: 44.87% (35/78)
+  Methods: 60.26% (47/78)
 
-  Lines:   37.74% (214/567)
+  Lines:   75.27% (353/469)
 
 
+  \RobotCafe\Controller::AbstractRobotCafeController
 
-\RobotCafe\Mapper::RobotDbSqlMapper
-  Methods:  85.71% ( 6/ 7)   Lines:  90.48% ( 57/ 63)
+    Methods:  88.89% ( 8/ 9)   Lines:  95.74% ( 45/ 47)
 
-\RobotCafe\Mapper::ShopDbSqlMapper
-  Methods:  75.00% ( 3/ 4)   Lines:  35.94% ( 23/ 64)
+  \RobotCafe\Controller::RobotController
 
-\RobotCafe\Model::Robot
-  Methods:  87.50% (14/16)   Lines:  92.75% ( 64/ 69)
+    Methods:  20.00% ( 1/ 5)   Lines:  87.50% ( 56/ 64)
 
-\RobotCafe\Model::Shop
-  Methods:  92.31% (12/13)   Lines:  97.22% ( 70/ 72)
+  \RobotCafe\Controller::ShopController
+
+    Methods:  42.86% ( 3/ 7)   Lines:  88.37% ( 38/ 43)
+
+  \RobotCafe\Mapper::RobotDbSqlMapper
+
+    Methods:  85.71% ( 6/ 7)   Lines:  90.48% ( 57/ 63)
+
+  \RobotCafe\Mapper::ShopDbSqlMapper
+
+    Methods:  75.00% ( 3/ 4)   Lines:  35.38% ( 23/ 65)
+  \RobotCafe\Model::Robot
+
+    Methods:  87.50% (14/16)   Lines:  92.75% ( 64/ 69)
+    
+  \RobotCafe\Model::Shop
+
+    Methods:  92.31% (12/13)   Lines:  97.22% ( 70/ 72)
 
 
