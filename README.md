@@ -4,14 +4,20 @@ RobotCafeApplication
 Introduction
 ------------
 This is a simple, restful application using the ZF2 MVC layer and module
-systems. This application is meant to be designed for robot adding to shop with moving command,
+systems. This application is meant to be designed for adding robot to shop with moving command,
 shop is simulated as a matrix grid, top left corner coordinate will be (0,0). Robot has the
 coordinate and heading direction.shop can trigger the robots to execute their own moving commands.
 
 The whole app is hosting in AWS,
 the general endpoint is http://54.206.18.76 , you will get a 'hello world' when you hit that url.
 
+System requirements
+-------------------
+PHP >=5.6
+After you download this application, cd to the application root, install composer and use composer install dependency:
 
+    curl -s https://getcomposer.org/installer | php
+    php composer.phar install
 
 Design ideas
 ------------
