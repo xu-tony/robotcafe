@@ -9,7 +9,7 @@ shop is simulated as a matrix grid, top left corner coordinate will be (0,0). Ro
 coordinate and heading direction.shop can trigger the robots to execute their own moving commands.
 
 The whole app is hosting in AWS,
-the general endpoint is http://54.206.125.49 , you will get a 'hello world' when you hit that url.
+the general endpoint is http://54.206.18.76 , you will get a 'hello world' when you hit that url.
 
 
 
@@ -30,7 +30,7 @@ API explanation
 
 1. shop get
 -----------
-url: http://54.206.125.49/shop/<:id>, http method is GET only, otherwise 405 status with response:
+url: http://54.206.18.76/shop/<:id>, http method is GET only, otherwise 405 status with response:
 
 {
   "message": "http method not allowed"
@@ -70,7 +70,7 @@ when the provided id has no data then response with 404 status:
 
 2. shop add
 -----------
-url: http://54.206.125.49/shop, http method is POST only, otherwise 405 status will return.
+url: http://54.206.18.76/shop, http method is POST only, otherwise 405 status will return.
 
 The request json data:
 
@@ -89,7 +89,7 @@ response with 200 status:
 
 3. shop delete
 --------------
-url: http://54.206.125.49/shop/<:id>, http method is DELETE only, otherwise 405 status will return.
+url: http://54.206.18.76/shop/<:id>, http method is DELETE only, otherwise 405 status will return.
 
 if the provided id is successfully deleted, response with 200 status:
 
@@ -101,7 +101,7 @@ otherwise 404 will return.
 
 4. shop robot add
 -----------------
-url: http://54.206.125.49/shop/<:id>/robot, http method is POST only, otherwise 405 status will return.
+url: http://54.206.18.76/shop/<:id>/robot, http method is POST only, otherwise 405 status will return.
 Request json:
 
 {"x":4,"y":4,"heading":"N","commands":"LM"},
@@ -124,7 +124,7 @@ the valid response is like:
 
 5. shop robot update
 -------------------
-url: http://54.206.125.49/shop/<:id>/robot/<:rid>, http method is PUT only, otherwise 405 status will return.
+url: http://54.206.18.76/shop/<:id>/robot/<:rid>, http method is PUT only, otherwise 405 status will return.
 Request json:
 
 {"x":4,"y":4,"heading":"N","commands":"LM"},
@@ -146,7 +146,7 @@ otherwise 404 will return.
 
 6. shop robot delete
 --------------------
-url: http://54.206.125.49/shop/<:id>/robot/<:rid>, httpd method is DELETE only, otherwise 405 status will return.
+url: http://54.206.18.76/shop/<:id>/robot/<:rid>, httpd method is DELETE only, otherwise 405 status will return.
 when robot id is existing in the provided shop id, then 200 will be returned with:
 
 {
@@ -157,7 +157,7 @@ otherwise resource not found.
 
 7. shop robot execute commands
 ------------------------------
-url: http://54.206.125.49/shop/<:id>/execute, httpd method is POST only, otherwise 405 status will return.
+url: http://54.206.18.76/shop/<:id>/execute, httpd method is POST only, otherwise 405 status will return.
 when robot id is existing in the provided shop id, the shop will trigger all robots to run their commands in "parallel":
 
 {
